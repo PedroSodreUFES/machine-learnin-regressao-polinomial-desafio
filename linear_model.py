@@ -43,6 +43,7 @@ plt.title("Correlação de Pearson")
 plt.savefig("./dataviz/corr-pearson.png")
 plt.close()
 
+plt.figure(figsize=(7,6))
 sns.heatmap(
     data=df_vendas
         .corr("spearman")[['receita_em_reais']]
@@ -56,6 +57,7 @@ plt.title("Correlação de Spearman para Receita")
 plt.savefig("./dataviz/receita-spearman-heatmap.png")
 plt.close()
 
+plt.figure(figsize=(7,6))
 sns.heatmap(
     data=df_vendas
         .corr("pearson")[['receita_em_reais']]
