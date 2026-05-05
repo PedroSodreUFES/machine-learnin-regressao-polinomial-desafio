@@ -57,9 +57,10 @@ python model.py
 ![Pairplot Dados](./dataviz/pairplot.png)
 
 #### Variáveis numéricas
-1. Pelo pairplot é possível enxergar que em termos das variáveis numericas, o nível não afeta o salário de forma clara. Enquanto há uma correlação claramente positiva entre salário e tempo na empresa.
-2. Pelos histogramas na diagonal, vê-se que o tempo de empresa e o nível aparecem em uma distribuição uniforme. Contudo, o salário aparece com assimetria positiva, ou seja: muitos ganham pouco e poucos ganham muito. Isso revela que a média não é um valor interessante paras representar dados faltantes, caso tenha.
-3. Com os boxplots, vê-se que não há dados faltantes em nenhuma coluna.
+1. Pelo pairplot é possível enxergar que, em termos das variáveis numericas, nenhuma variável tem uma relação correlação linear com a target de forma clara.
+2. Pelos histogramas, é possível notar que as distribuições de *tempo de experiência* e *número de vendas* são aproximadamente uniformes. O fator sazonal mostra que o último fator sazonal é mais presente, o que gera uma assimetria negativa. Já a receita tem uma leve assimetria positiva, ou seja a maioria dos vendedores vendem menos.
+3. Com os boxplots, vê-se que não há outliers em nenhuma coluna.
+
 #### Variávies categóricas
 Não há variáveis categóricas.
 
@@ -70,7 +71,7 @@ Não há variáveis categóricas.
 #### Correlação de Pearson
 ![Correlacao com salário spearman](./dataviz/receita-pearson-heatmap.png)
 
-Pela correlação de Spearman é possível ver uma correlação positiva perfeita entre salário e tempo na empresa. O mesmo não pode ser visto na correlação de Pearson. Isso revela que um modelo linear não é ideal para representar o cenário, já que a correlação de Pearson é mais precisa para modelos lineares, enquanto a de Spearman enxerga relações não-lineares.
+Pela correlação de Spearman e de Pearson é possível ver que a correlação entre as variáveis são muito baixas, o que já indica que o modelo linear não deve ser ideal para o problema. 
 
 ### Treinamento do modelo
 ![Percentual Dif. RMSE y_pred_test e y_pred_train](./dataviz/dif-percentage-rmse-por-grau-polinomial.png)
@@ -120,4 +121,4 @@ Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o
 - Como o modelo tem um R²-Score de 0.997 e tem um desvio de erro de em média 50 reais tanto para os dados de teste, quanto para os dados treinados, o modelo é adequado para prever o dataset.
 
 ### Créditos
-Pedro Malini, 3 de Maio de 2026 
+Pedro Malini, 5 de Maio de 2026 

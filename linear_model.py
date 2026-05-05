@@ -7,9 +7,8 @@ import seaborn as sns
 from scipy.stats import shapiro, kstest, zscore
 from statsmodels.stats.diagnostic import lilliefors, het_goldfeldquandt
 from sklearn.compose import ColumnTransformer
-from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score, mean_absolute_error, root_mean_squared_error
+from sklearn.metrics import r2_score, root_mean_squared_error
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
@@ -21,6 +20,29 @@ print(df_vendas.info())
 
 # 2: Análise Exploratória dos dados
 print("\nAnálise Exploratória:")
+
+sns.heatmap(
+    data=df_vendas.corr("spearman"),
+    vmax=1,
+    vmin=-1,
+    cmap='crest',
+    annot=True,
+)
+plt.title("Correlação de Spearman")
+plt.savefig("./dataviz/corr-spearman.png")
+plt.close()
+
+sns.heatmap(
+    data=df_vendas.corr("pearson"),
+    vmax=1,
+    vmin=-1,
+    cmap='crest',
+    annot=True,
+)
+plt.title("Correlação de Pearson")
+plt.savefig("./dataviz/corr-pearson.png")
+plt.close()
+
 sns.heatmap(
     data=df_vendas
         .corr("spearman")[['receita_em_reais']]
@@ -30,6 +52,7 @@ sns.heatmap(
     cmap='crest',
     annot=True,
 )
+plt.title("Correlação de Spearman para Receita")
 plt.savefig("./dataviz/receita-spearman-heatmap.png")
 plt.close()
 
@@ -42,6 +65,7 @@ sns.heatmap(
     cmap='crest',
     annot=True,
 )
+plt.title("Correlação de Pearson para Receita")
 plt.savefig("./dataviz/receita-pearson-heatmap.png")
 plt.close()
 
@@ -92,7 +116,6 @@ print("\nTreinar Modelo")
 X = df_vendas.drop(columns=['receita_em_reais'])
 y = df_vendas["receita_em_reais"]
 
-kf = KFold(n_splits=5, shuffle=True, random_state=51 )
 
 colunas_numericas = ['tempo_de_experiencia', 'fator_sazonal', 'numero_de_vendas']
 
@@ -109,12 +132,13 @@ model_linear = Pipeline(steps=[
     ("regressor", LinearRegression())
 ])
 
-# Aplicar K-Folds
 rmse_scores_fold_train = []
 rmse_scores_fold_test = []
 r2_scores_fold = []
 residuos_fold = []
 y_pred_total = []
+
+kf = KFold(n_splits=5, shuffle=True, random_state=51 )
 
 for train_index, test_index in kf.split(X=X):
     X_train, X_test = X.iloc[train_index], X.iloc[test_index]
@@ -139,6 +163,7 @@ for train_index, test_index in kf.split(X=X):
 r2score_final = np.mean(r2_scores_fold)
 rmse_train_final = np.mean(rmse_scores_fold_train)
 rmse_test_final = np.mean(rmse_scores_fold_test)
+percentual_difference = ((rmse_train_final - rmse_test_final) / rmse_test_final) * 100
 y_pred = np.array(y_pred_total).reshape(-1)
 residuos_final = np.array(residuos).reshape(-1)
 
@@ -146,3 +171,4 @@ print("\nMétricas:")
 print(f"R²-Score final: {r2score_final}")
 print(f"Root Mean Squared Error - Train: {rmse_train_final}")
 print(f"Root Mean Squared Error - Test: {rmse_test_final}")
+print(f"Percentual RMSE  Difference: {percentual_difference:.2f}")
