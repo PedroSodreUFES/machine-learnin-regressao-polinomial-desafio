@@ -1,4 +1,5 @@
 import joblib
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import pingouin as pg
@@ -14,10 +15,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 
 # 1: Carregar dados
+print("Carregar Dados")
 df_vendas = pd.read_csv("./dataset/sales_data.csv")
 print(df_vendas.info())
 
 # 2: Análise Exploratória dos dados
+print("\nAnálise Exploratória:")
 sns.heatmap(
     data=df_vendas
         .corr("spearman")[['receita_em_reais']]
@@ -85,6 +88,7 @@ plt.savefig("./dataviz/receita-boxplot.png")
 plt.close()
 
 # 3: Treinar modelo
+print("\nTreinar Modelo")
 X = df_vendas.drop(columns=['receita_em_reais'])
 y = df_vendas["receita_em_reais"]
 
@@ -121,4 +125,24 @@ for train_index, test_index in kf.split(X=X):
     y_train_pred = model_linear.predict(X_train)
     y_test_pred = model_linear.predict(X_test)
 
+    rmse_train = root_mean_squared_error(y_true=y_train, y_pred=y_train_pred)
+    rmse_test = root_mean_squared_error(y_true=y_test, y_pred=y_test_pred)
+    r2score = r2_score(y_true=y_test, y_pred=y_test_pred)
+    residuos = np.array(y_test - y_test_pred) # type: ignore
 
+    rmse_scores_fold_train.append(rmse_train)
+    rmse_scores_fold_test.append(rmse_test)
+    r2_scores_fold.append(r2score)
+    residuos_fold.append(residuos)
+    y_pred_total.append(y_test_pred)
+
+r2score_final = np.mean(r2_scores_fold)
+rmse_train_final = np.mean(rmse_scores_fold_train)
+rmse_test_final = np.mean(rmse_scores_fold_test)
+y_pred = np.array(y_pred_total).reshape(-1)
+residuos_final = np.array(residuos).reshape(-1)
+
+print("\nMétricas:")
+print(f"R²-Score final: {r2score_final}")
+print(f"Root Mean Squared Error - Train: {rmse_train_final}")
+print(f"Root Mean Squared Error - Test: {rmse_test_final}")
