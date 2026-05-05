@@ -9,12 +9,13 @@
 ![Joblib](https://img.shields.io/badge/Joblib-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Pingouin](https://img.shields.io/badge/Pingouin-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 # Modelo: Previsibilidade de Salário
-Um modelo em **Regressão Polinomial** para prever qual o salário de uma pessoa de uma empresa fictícia de acordo com seus dados, sendo estes:
-+ Nível na empresa (1-10)
+Um modelo em **Regressão Polinomial** para prever quanto um vendedor de uma empresa fictícia de acordo com seus dados, sendo estes:
++ Número de vendas
 + Tempo na empresa (em meses)
++ Fator sazonal
 ## Sobre o projeto
 1. Trata de uma análise exploratória de dados para verificar a relação dos dados com a variável target salario. Feita com pandas, seaborn e matplotlib.
-2. Com o pairplot, é possível notar a relação entre as variáveis. Além disso, com o heatmap das correlações é possível ver quais variáeveis independentes tem mais realação de pearson e spearman com o salário.
+2. Com o pairplot, é possível notar a relação entre as variáveis. Além disso, com o heatmap das correlações é possível ver quais variáveis independentes tem mais realação de pearson e spearman com o salário.
 3. O treinamento do modelo é feito com vários graus polinomiais distintos até encontras um ótimo. Após encontrar um ótimo, realiza o treinamento a partir somente do ótimo. Também é feito o treinamento de um modelo linear para fins de comparação e mostrar como o modelo não é bom para esse cenário.
 4. Após o treinamento do modelo, há uma análise da qualidade do modelo, usando métricas como erro médio absoluto, erro médio na raíz quadrada e r2_score.
 5. Faz-se uma análise dos resíduos da solução, olhando seu testes de normalidade e de homocedasticidade para ver se estão próximos a uma distribuição normal.
@@ -64,10 +65,10 @@ Não há variáveis categóricas.
 
 ### Correção dos dados e salário
 #### Correlação de Spearman
-![Correlacao com salário spearman](./dataviz/correlacoes-spearman-heatmap.png)
+![Correlacao com salário spearman](./dataviz/receita-spearman-heatmap.png)
 
 #### Correlação de Pearson
-![Correlacao com salário spearman](./dataviz/correlacoes-pearson-heatmap.png)
+![Correlacao com salário spearman](./dataviz/receita-pearson-heatmap.png)
 
 Pela correlação de Spearman é possível ver uma correlação positiva perfeita entre salário e tempo na empresa. O mesmo não pode ser visto na correlação de Pearson. Isso revela que um modelo linear não é ideal para representar o cenário, já que a correlação de Pearson é mais precisa para modelos lineares, enquanto a de Spearman enxerga relações não-lineares.
 
