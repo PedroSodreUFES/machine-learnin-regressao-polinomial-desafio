@@ -6,29 +6,29 @@
 ![Scipy](https://img.shields.io/badge/SciPy-FF6F00?style=for-the-badge&logo=scipy&logoColor=white)
 ![Joblib](https://img.shields.io/badge/Joblib-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Pingouin](https://img.shields.io/badge/Pingouin-FF6F00?style=for-the-badge&logo=python&logoColor=white)
+
 # Modelo: Previsibilidade de Salário
 Um modelo em **Regressão Polinomial** para prever quanto um vendedor de uma empresa fictícia de acordo com seus dados, sendo estes:
 + Número de vendas
 + Tempo na empresa (em meses)
 + Fator sazonal
+
 ## Sobre o projeto
 1. Trata de uma análise exploratória de dados para verificar a relação dos dados com a variável target salario. Feita com pandas, seaborn e matplotlib.
 2. Com o pairplot, é possível notar a relação entre as variáveis. Além disso, com o heatmap das correlações é possível ver quais variáveis independentes tem mais realação de pearson e spearman com o salário.
 3. O treinamento do modelo é feito com vários graus polinomiais distintos até encontras um ótimo. Após encontrar um ótimo, realiza o treinamento a partir somente do ótimo. Também é feito o treinamento de um modelo linear para fins de comparação e mostrar como o modelo não é bom para esse cenário.
 4. Após o treinamento do modelo, há uma análise da qualidade do modelo, usando métricas como erro médio absoluto, erro médio na raíz quadrada e r2_score.
 5. Faz-se uma análise dos resíduos da solução, olhando seu testes de normalidade e de homocedasticidade para ver se estão próximos a uma distribuição normal.
-6. Usa joblib para salvar o modelo para consumo em um arquivo .pkl. ESse consumo é feito pelo App criado com Streamlit e por uma api feita com FastAPI.
+
 ## Tecnologias usadas
 1. Python
 2. Scikit-Learn
 3. Seaborn
 4. Matplotlib
 5. Pandas
-6. Scipy
-7. FastAPI
-8. Streamlit
-9. Joblib
-10. Pingouin
+6. Streamlit
+7. Joblib
+8.  Pingouin
 ### Como preparar o ambiente
 ```bash
 pipenv sync
