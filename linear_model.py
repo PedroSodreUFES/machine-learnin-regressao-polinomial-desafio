@@ -1,11 +1,9 @@
-import joblib
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import pingouin as pg
 import seaborn as sns
-from scipy.stats import shapiro, kstest, zscore
-from statsmodels.stats.diagnostic import lilliefors, het_goldfeldquandt
+from scipy.stats import zscore
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, root_mean_squared_error
@@ -17,6 +15,7 @@ from sklearn.pipeline import Pipeline
 print("Carregar Dados")
 df_vendas = pd.read_csv("./dataset/sales_data.csv")
 print(df_vendas.info())
+print(df_vendas.describe())
 
 # 2: Análise Exploratória dos dados
 print("\nAnálise Exploratória:")
@@ -162,15 +161,29 @@ for train_index, test_index in kf.split(X=X):
     residuos_fold.append(residuos)
     y_pred_total.append(y_test_pred)
 
+
+# 4: Análise de Métricas
 r2score_final = np.mean(r2_scores_fold)
 rmse_train_final = np.mean(rmse_scores_fold_train)
 rmse_test_final = np.mean(rmse_scores_fold_test)
-percentual_difference = ((rmse_train_final - rmse_test_final) / rmse_test_final) * 100
+percentual_difference = ((rmse_test_final - rmse_train_final) / rmse_train_final) * 100
 y_pred = np.array(y_pred_total).reshape(-1)
-residuos_final = np.array(residuos).reshape(-1)
+residuos_final = np.array(residuos_fold).reshape(-1)
 
 print("\nMétricas:")
 print(f"R²-Score final: {r2score_final}")
 print(f"Root Mean Squared Error - Train: {rmse_train_final}")
 print(f"Root Mean Squared Error - Test: {rmse_test_final}")
-print(f"Percentual RMSE  Difference: {percentual_difference:.2f}")
+print(f"Percentual RMSE  Difference: {percentual_difference:.2f}%")
+
+residuos_std = zscore(residuos_final)
+pg.qqplot(x=residuos_std, dist='norm', confidence=0.95)
+plt.savefig("./dataviz/qqplot-linear.png")
+plt.close()
+
+sns.scatterplot(x=y_pred, y=residuos_std) # type: ignore
+plt.axhline(y=2, color='red')
+plt.axhline(y=-2, color="red")
+plt.axhline(y=0, color='gray')
+plt.savefig("./dataviz/residuos-linear-scatter.png")
+plt.close()

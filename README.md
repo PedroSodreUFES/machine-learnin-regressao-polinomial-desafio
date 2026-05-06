@@ -84,15 +84,15 @@ Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o
 ### Comparação modelo linear múltiplo x modelo polinomial
 |Modelo\Métricas| R²-Score | RMSE Teste | RMSE treinamento |
 |:---:|:---:|:---:|:---:|
-|Regressão Linear Múltipla|≃ 0.83|≃ R$ 1886.45|≃ R$ 1882.45|
+|Regressão Linear Múltipla|≃ -0.14|≃ R$ 2657.78|≃ R$ 2503.77|
 |Regressão Polinomial|≃ 0.997|≃ R$ 54.71|≃ R$ 53.33|
 
-1. ***R²-Score***: Mostra que o modelo polinomial explica melhor a variabilidade dos dados.
-2. ***RSME***: Mostra que o modelo linear pode errar um salário por até 1882 reais para dados de treinamento, e até 1886 reais para dados de teste. Isso é mais que um salário mínimo, o que é muito ruim. Já o modelo polinomial erra em torno de 50 reais, o que é bem menos, algo em torno de 3.5% de um salário mínimo em Maio de 2026 
+1. ***R²-Score***: Mostra que o modelo polinomial explica melhor a variabilidade dos dados. O modelo linear tem um resultado negativo, logo é melhor usar a média para prever, que o modelo, logo o modelo linear é muito ruim. 
+2. ***RSME***: Mostra que o modelo linear pode errar uma venda por até 2503 reais para dados de treinamento, e até 2657 reais para dados de teste. Isso é mais que um salário mínimo, o que é muito ruim. Já o modelo polinomial erra em torno de 50 reais, o que é bem menos, algo em torno de 3.5% de um salário mínimo em Maio de 2026.
 
 > ***Conclusão***: O modelo polinomial explica melhor a variabilidade do dataset e é mais adequado.
 
-### Métricas do modelo
+### Métricas do modelo polinomial
 #### Métricas de linearidade e de outliers
 ![Linearidade](./dataviz/rgpoly-residuos-scatter.png)
 
