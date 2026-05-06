@@ -3,8 +3,6 @@
 ![Seaborn](https://img.shields.io/badge/Seaborn-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-FF6F00?style=for-the-badge&logo=pandas&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-FF6F00?style=for-the-badge&logo=fastapi&logoColor=white)
-![Sreamlit](https://img.shields.io/badge/Streamlit-FF6F00?style=for-the-badge&logo=streamlit&logoColor=white)
 ![Scipy](https://img.shields.io/badge/SciPy-FF6F00?style=for-the-badge&logo=scipy&logoColor=white)
 ![Joblib](https://img.shields.io/badge/Joblib-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Pingouin](https://img.shields.io/badge/Pingouin-FF6F00?style=for-the-badge&logo=python&logoColor=white)
@@ -36,20 +34,9 @@ Um modelo em **Regressão Polinomial** para prever quanto um vendedor de uma emp
 pipenv sync
 pipenv shell
 ```
-### Como testar em forma de api
-```bash
-uvicorn api_modelo_salario:app --reload
-```
-Ir na web no [link de teste](http://localhost:8000/docs)
-### Como testar em forma de web app
-Tenha a API rodando em algum terminal.
-```bash
-streamlit run app_modelo_salario.py
-```
-Ir na web no [link de teste](http://localhost:8501)
 ### Como rodar o código que gera o modelo
 ```bash
-python model.py
+python poly_model.py
 ```
 ## Aspectos do Modelo Treinado
 ### Análise do cenário
@@ -57,7 +44,7 @@ python model.py
 ![Pairplot Dados](./dataviz/pairplot.png)
 
 #### Variáveis numéricas
-1. Pelo pairplot é possível enxergar que, em termos das variáveis numericas, nenhuma variável tem uma relação correlação linear com a target de forma clara.
+1. Pelo pairplot é possível enxergar que, em termos das variáveis numericas, nenhuma variável tem uma correlação clara com a target. Os pontos estão geralmente espalhados.
 2. Pelos histogramas, é possível notar que as distribuições de *tempo de experiência* e *número de vendas* são aproximadamente uniformes. O fator sazonal mostra que o último fator sazonal é mais presente, o que gera uma assimetria negativa. Já a receita tem uma leve assimetria positiva, ou seja a maioria dos vendedores vendem menos.
 3. Com os boxplots, vê-se que não há outliers em nenhuma coluna.
 
@@ -74,51 +61,50 @@ Não há variáveis categóricas.
 Pela correlação de Spearman e de Pearson é possível ver que a correlação entre as variáveis são muito baixas, o que já indica que o modelo linear não deve ser ideal para o problema. 
 
 ### Treinamento do modelo
-![Percentual Dif. RMSE y_pred_test e y_pred_train](./dataviz/dif-percentage-rmse-por-grau-polinomial.png)
+![Percentual Dif. RMSE y_pred_test e y_pred_train](./dataviz/polynomial_model/diff-rmse-linegraph.png)
 
-![Dif. RMSE y_pred_test e y_pred_train](./dataviz/rmse-por-grau-polinomial.png)
+![Dif. RMSE y_pred_test e y_pred_train](./dataviz/polynomial_model/test-train-rmse-linegraph.png)
 
 Usou-se o método k-fold que divide o modelo em 5, usando embaralhamento dos dados. Com isso realiza testes repetidamente com 4 dados de treinamento 1 dado de teste. Com essa iteração tira os valores R²-Score, Rounded Mean Squared Error para os dados de treinamento e de teste, e obtém os resíduos. Isso é feito tanto para o modelo linear como para o modelo polinomial.<br />
-Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o objetivo de compreender qual polinômio representa melhor o modelo. Ao final o **grau 4** aparentou ser o ótimo por apresentar uma diferença percentual de rmse entre predições de treino e de testes menores. Além disso, para esses graus, seu RMSE são muito parecidos para teste e treinamento, o que mostra que está conseguindo lidar com ambos os cenários sem mostrar underfitting e overfitting.
+Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o objetivo de compreender qual polinômio representa melhor o modelo. Ao final o **grau 3** aparentou ser o ótimo por apresentar uma diferença percentual de rmse entre predições de treino e de testes menores. Além disso, para esses graus, seu RMSE são muito parecidos para teste e treinamento, o que mostra que está conseguindo lidar com ambos os cenários sem mostrar underfitting e overfitting de forma mais expresiva.
 
 ### Comparação modelo linear múltiplo x modelo polinomial
 |Modelo\Métricas| R²-Score | RMSE Teste | RMSE treinamento |
 |:---:|:---:|:---:|:---:|
 |Regressão Linear Múltipla|≃ -0.14|≃ R$ 2657.78|≃ R$ 2503.77|
-|Regressão Polinomial|≃ 0.997|≃ R$ 54.71|≃ R$ 53.33|
+|Regressão Polinomial|≃ -0.74|≃ R$ 3225.0|≃ R$ 2317.53|
 
-1. ***R²-Score***: Mostra que o modelo polinomial explica melhor a variabilidade dos dados. O modelo linear tem um resultado negativo, logo é melhor usar a média para prever, que o modelo, logo o modelo linear é muito ruim. 
-2. ***RSME***: Mostra que o modelo linear pode errar uma venda por até 2503 reais para dados de treinamento, e até 2657 reais para dados de teste. Isso é mais que um salário mínimo, o que é muito ruim. Já o modelo polinomial erra em torno de 50 reais, o que é bem menos, algo em torno de 3.5% de um salário mínimo em Maio de 2026.
+1. ***R²-Score***: Mostra que o modelo linear explica melhor a variabilidade dos dados. Contudo, ambos os modelos são negativos, ou seja é melhor até usar a média dos dados para prever que os modelos. 
+2. ***RSME***: Considerando que o mínimo e o máximo da receita são 1133 BRL e 9941 BRL, a raíz do desvio do erro médio é muito alto para ambos os casos tanto no cenário de teste, quanto de treinamento, logo ambos modelos são inadequados.
 
-> ***Conclusão***: O modelo polinomial explica melhor a variabilidade do dataset e é mais adequado.
+> ***Conclusão***: Nenhum dos modelos é bom para prever o dataset.
 
 ### Métricas do modelo polinomial
 #### Métricas de linearidade e de outliers
-![Linearidade](./dataviz/rgpoly-residuos-scatter.png)
+![Linearidade](./dataviz/polynomial_model/residuos-scatter.png)
 
-1. Outliers: Pelos scatter dos resíduos, vê-se alguns pontos acima de +2 e abaixo de -2, logo há alguns outliers que não são bem explicados pelo modelo.
-2. Modelo polinomial adequado e homocedasticidade: Os resíduos estão espalhados sem formar um padrão, o que indica que o modelo polinomial é adequado e há homocedasticidade.
+1. Outliers: Pelos scatter dos resíduos, vê-se alguns 1 ponto acima de +2 e abaixo de -2.
+2. Modelo polinomial inadequado e heterocedasticidade: Os resíduos estão espalhados formando um padrão de linha reta, o que indica que o modelo polinomial é inadequado e há heterocedasticidade.
 
 #### Métricas de Normalidade dos Resíduos
-![qqplot modelo polinomial](./dataviz/rgpoly-qqplot.png)
+![qqplot modelo polinomial](./dataviz/polynomial_model/qqplot.png)
 
-- QQplot indica evidência de normalidade dos resíduosjá que os resíduos não escapam do limite traçado.
+- QQplot indica evidência de normalidade dos resíduos, já que os resíduos não escapam do limite traçado.
 
 | P-valor de Shapiro-Wilk | P-valor de Kolmogorov-Smirnov | P-valor de Lilliefors |
 |:--:|:--:|:--:|
-|≃ 0.68|≃ 1*10⁻²¹⁴|≃ 0.96|
+|≃ 0.804|≃ 0.871|≃ 0.571|
 
 > **H0**: *os resíduos seguem uma distribuição normal*<br/>
 > **H1**: *os resíduos não seguem uma distribuição normal*
-- Por ser abaixo de 0.05, *Kolmogorov-Smirnov* rejeita a hipótese nula por haver evidência de distribuição não normal nos resíduos. OBS: Kolmogorov-Smirnov rejeitam fortemente.
-- Por ser acima de 0.05, *Lilliefors* e *Shapiro-Wilk* apontam evidência de distribuição normal dos resíduos, logo não há evidência suficiente para rejeitar a hipótese nula. OBS: Lilliefors não rejeita fortemente.
-
-> *OBS: As estatísticas são mais sensíveis a outliers que o QQPlot. Por isso, o último é levado em questão para afirmar que há distribuição normal com suorte nos P-Valores de Shapiro-Wilk e Lilliefors.*
+- Por ser acima de 0.05, *Lilliefors*, *Shapiro-Wilk* e *Kolmogorov-Smirnov* apontam evidência de distribuição normal dos resíduos, logo não há evidência suficiente para rejeitar a hipótese nula.
+  
+> *OBS: As estatísticas são mais sensíveis a outliers que o QQPlot. Por isso, o último, na maioria das vezes, é levado em questão com maior prioridade para afirmar que há distribuição normal dos resíduos que as estatísticas.*
 
 
 ### Conclusão
-  - Pela correlação de Spearman e pela correlação de Pearson já seria possível concluir que o modelo de regressão linear não é ideal para o caso devido à relação polinomial com grau acima de 1 entre tempo de empresa e salario. Isso era possível pois a correlação de Pearson indica correlação 0.9, já a de spearman indica 1. Ou seja, a correlação é mais adequada para um modelo polinomial. No entanto, com as métricas mostradas acima, mostrou-se que o modelo polinomial tem erros menores e conseguem prever melhor tanto os dados treinados quanto os de teste, além de prover um R²-Score maior que o modelo linear, ou seja explica melhor o dataset que o modelo linear.
-- Como o modelo tem um R²-Score de 0.997 e tem um desvio de erro de em média 50 reais tanto para os dados de teste, quanto para os dados treinados, o modelo é adequado para prever o dataset.
+- Pela correlação de Spearman e pela correlação de Pearson já seria possível concluir que o modelo de regressão linear, nem o modelo polinomial são ideais para o cenário, pois a correlação das variáveis independentes com a receita não são fortes(Bem próximos de zero).
+- Como o modelo linear tem um R²-Score maior que o modelo polinomial, então o modelo linear explica melhor a variabilidade dos resultados. Contudo, ambos modelos são inadequados para fazer previsões, pois apresentam R²-Score negativos.
 
 ### Créditos
 Pedro Malini, 5 de Maio de 2026 
