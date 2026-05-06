@@ -4,7 +4,6 @@
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-FF6F00?style=for-the-badge&logo=pandas&logoColor=white)
 ![Scipy](https://img.shields.io/badge/SciPy-FF6F00?style=for-the-badge&logo=scipy&logoColor=white)
-![Joblib](https://img.shields.io/badge/Joblib-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 ![Pingouin](https://img.shields.io/badge/Pingouin-FF6F00?style=for-the-badge&logo=python&logoColor=white)
 
 # Modelo: Previsibilidade de Salário
@@ -27,8 +26,7 @@ Um modelo em **Regressão Polinomial** para prever quanto um vendedor de uma emp
 4. Matplotlib
 5. Pandas
 6. Scipy
-7. Joblib
-8.  Pingouin
+7.  Pingouin
 ### Como preparar o ambiente
 ```bash
 pipenv sync
