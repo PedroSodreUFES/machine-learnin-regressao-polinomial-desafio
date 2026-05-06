@@ -178,12 +178,17 @@ print(f"Percentual RMSE  Difference: {percentual_difference:.2f}%")
 
 residuos_std = zscore(residuos_final)
 pg.qqplot(x=residuos_std, dist='norm', confidence=0.95)
-plt.savefig("./dataviz/qqplot-linear.png")
+plt.savefig("./dataviz/linear-model/qqplot.png")
 plt.close()
 
 sns.scatterplot(x=y_pred, y=residuos_std) # type: ignore
 plt.axhline(y=2, color='red')
 plt.axhline(y=-2, color="red")
 plt.axhline(y=0, color='gray')
-plt.savefig("./dataviz/residuos-linear-scatter.png")
+plt.savefig("./dataviz/linear-model/residuos-scatter.png")
+plt.close()
+
+sns.scatterplot(y=y_test, x=range(1, len(y_test)+1), color='b') # type: ignore
+sns.scatterplot(y=y_test_pred, x=range(1, len(y_test)+1), color='r') # type: ignore
+plt.savefig("./dataviz/linear-model/test-x-pred-scatter.png")
 plt.close()
