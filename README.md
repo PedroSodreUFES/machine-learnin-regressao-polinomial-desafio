@@ -107,4 +107,4 @@ Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o
 - Como o modelo linear tem um R²-Score maior que o modelo polinomial, então o modelo linear explica melhor a variabilidade dos resultados. Contudo, ambos modelos são inadequados para fazer previsões, pois apresentam R²-Score negativos.
 
 ### Créditos
-Pedro Malini, 5 de Maio de 2026 
+Pedro Malini, 6 de Maio de 2026 
