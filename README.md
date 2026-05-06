@@ -26,7 +26,7 @@ Um modelo em **Regressão Polinomial** para prever quanto um vendedor de uma emp
 3. Seaborn
 4. Matplotlib
 5. Pandas
-6. Streamlit
+6. Scipy
 7. Joblib
 8.  Pingouin
 ### Como preparar o ambiente
