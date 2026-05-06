@@ -18,7 +18,7 @@ print(df_receita.describe())
 
 # 2: Treinamento do modelo
 # graus = [1,2,3,4,5,6,7,8,9,10]
-graus=[3]
+graus=[2]
 
 X = df_receita.drop(columns=['receita_em_reais'])
 y = df_receita["receita_em_reais"]
@@ -46,7 +46,6 @@ for grau in graus:
         ('poly_features', poly_features),
         ('regressor', LinearRegression()),
     ])
-
 
     rmse_scores_fold_train = []
     rmse_scores_fold_test = []
@@ -110,7 +109,9 @@ if len(graus) > 1:
 r2 = r2score_test_values[0]
 rmse_test = rmse_test_values[0]
 rmse_train = rmse_train_values[0]
-
+print(f"R²-Score: {r2}")
+print(f"Root Mean Squared Error - Test: {rmse_test}")
+print(f"Root Mean Squared Error - Train: {rmse_train}")
 # Análise Residual
 residuos_std = zscore(residuos)
 

@@ -64,13 +64,17 @@ Pela correlação de Spearman e de Pearson é possível ver que a correlação e
 ![Dif. RMSE y_pred_test e y_pred_train](./dataviz/polynomial_model/test-train-rmse-linegraph.png)
 
 Usou-se o método k-fold que divide o modelo em 5, usando embaralhamento dos dados. Com isso realiza testes repetidamente com 4 dados de treinamento 1 dado de teste. Com essa iteração tira os valores R²-Score, Rounded Mean Squared Error para os dados de treinamento e de teste, e obtém os resíduos. Isso é feito tanto para o modelo linear como para o modelo polinomial.<br />
-Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o objetivo de compreender qual polinômio representa melhor o modelo. Ao final o **grau 3** aparentou ser o ótimo por apresentar uma diferença percentual de rmse entre predições de treino e de testes menores. Além disso, para esses graus, seu RMSE são muito parecidos para teste e treinamento, o que mostra que está conseguindo lidar com ambos os cenários sem mostrar underfitting e overfitting de forma mais expresiva.
+Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o objetivo de compreender qual polinômio representa melhor o modelo. Ao final o **grau 2** aparentou ser o ótimo por apresentar uma diferença percentual de rmse entre predições de treino e de testes menores. Além disso, para esses graus, seu RMSE são muito parecidos para teste e treinamento, o que mostra que está conseguindo lidar com ambos os cenários sem mostrar underfitting e overfitting de forma mais expresiva.
+
+![R² Scores por Grau](./dataviz/polynomial_model/r2-scores-x-degree-linegraph.png)
+
+Pelo gráfico de R²-Scores, é possível ver que quanto maior o grau do polinômio, pior a variabilidade dos dados está sendo explicada. Logo já é perceptível que, assim como o modelo linear, o modelo polinomial não deve explicar bem o cenário. Não foi escolhido grau 1, pois este representa o modelo linear.
 
 ### Comparação modelo linear múltiplo x modelo polinomial
 |Modelo\Métricas| R²-Score | RMSE Teste | RMSE treinamento |
 |:---:|:---:|:---:|:---:|
 |Regressão Linear Múltipla|≃ -0.14|≃ R$ 2657.78|≃ R$ 2503.77|
-|Regressão Polinomial|≃ -0.74|≃ R$ 3225.0|≃ R$ 2317.53|
+|Regressão Polinomial|≃ -0.24|≃ R$ 2775.01|≃ R$ 2423.52|
 
 1. ***R²-Score***: Mostra que o modelo linear explica melhor a variabilidade dos dados. Contudo, ambos os modelos são negativos, ou seja é melhor até usar a média dos dados para prever que os modelos. 
 2. ***RSME***: Considerando que o mínimo e o máximo da receita são 1133 BRL e 9941 BRL, a raíz do desvio do erro médio é muito alto para ambos os casos tanto no cenário de teste, quanto de treinamento, logo ambos modelos são inadequados.
@@ -82,7 +86,7 @@ Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o
 ![Linearidade](./dataviz/polynomial_model/residuos-scatter.png)
 
 1. Outliers: Pelos scatter dos resíduos, vê-se alguns 1 ponto acima de +2 e abaixo de -2.
-2. Modelo polinomial inadequado e heterocedasticidade: Os resíduos estão espalhados formando um padrão de linha reta, o que indica que o modelo polinomial é inadequado e há heterocedasticidade.
+2. Modelo polinomial de grau 2 inadequado e com heterocedasticidade: Os resíduos estão espalhados formando um padrão de linha reta, o que indica que o modelo polinomial é inadequado e há heterocedasticidade.
 
 #### Métricas de Normalidade dos Resíduos
 ![qqplot modelo polinomial](./dataviz/polynomial_model/qqplot.png)
@@ -91,7 +95,7 @@ Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o
 
 | P-valor de Shapiro-Wilk | P-valor de Kolmogorov-Smirnov | P-valor de Lilliefors |
 |:--:|:--:|:--:|
-|≃ 0.804|≃ 0.871|≃ 0.571|
+|≃ 0.843|≃ 0.941|≃ 0.716|
 
 > **H0**: *os resíduos seguem uma distribuição normal*<br/>
 > **H1**: *os resíduos não seguem uma distribuição normal*
@@ -101,6 +105,9 @@ Contudo, para o modelo polinomial, isso é feito para 10 graus polinomiais com o
 
 
 ### Conclusão
+![Predição x Valor real](./dataviz/polynomial_model/y-true-x-y-test-scatter.png)
+
+- Pelo scatter comparando receita prevista e receita real, vê-se que o modelo erra muitas vezes com poucos pontos próximos.
 - Pela correlação de Spearman e pela correlação de Pearson já seria possível concluir que o modelo de regressão linear, nem o modelo polinomial são ideais para o cenário, pois a correlação das variáveis independentes com a receita não são fortes(Bem próximos de zero).
 - Como o modelo linear tem um R²-Score maior que o modelo polinomial, então o modelo linear explica melhor a variabilidade dos resultados. Contudo, ambos modelos são inadequados para fazer previsões, pois apresentam R²-Score negativos.
 
